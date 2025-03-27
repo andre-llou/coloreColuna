@@ -1,0 +1,23 @@
+// Essa função vai destacar a Row selecionada, limitada até o R por questoes de otimização.
+
+function onSelectionChange(e) {
+  if (!e) return;
+
+  var sheet = e.range.getSheet();
+  var row = e.range.getRow();
+  var lastColumn = 11; // Coluna R (18ª coluna)
+  var props = PropertiesService.getDocumentProperties();
+  var key = sheet.getName() + "_lastRow";
+  var lastRowStr = props.getProperty(key);
+  var lastRow = lastRowStr ? parseInt(lastRowStr, 10) : null;
+
+  if (lastRow === row) return;
+
+  if (lastRow) {
+    sheet.getRange(lastRow, 1, 1, lastColumn).setBackground(null);
+  }
+
+  sheet.getRange(row, 1, 1, lastColumn).setBackground("#FFFF00"); // Amarelo
+
+  props.setProperty(key, row);
+}
